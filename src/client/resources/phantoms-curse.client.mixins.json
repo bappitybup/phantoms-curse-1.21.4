@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "net.bappity.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"MixinEntityRenderer",
+		"ClientMixinPhantomEntity",
+		"ClientMixinLivingEntity",
+		"MixinEntity",
+		"MixinClientPlayerInteractionManager"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
