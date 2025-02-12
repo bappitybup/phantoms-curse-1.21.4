@@ -10,17 +10,16 @@ import net.minecraft.util.Identifier;
 import java.util.UUID;
 
 public class SyncIrregularityPacket {
-    public static final CustomPayload.Id<Payload> ID = 
-        new CustomPayload.Id<>(Identifier.of("bappity", "sync_irregularity"));
+    public static final CustomPayload.Id<Payload> ID = new CustomPayload.Id<>(
+            Identifier.of("bappity", "sync_irregularity"));
 
     public record Payload(boolean isIrregular, UUID playerUuid) implements CustomPayload {
         public static final PacketCodec<PacketByteBuf, Payload> CODEC = PacketCodec.of(
-            (payload, buf) -> {
-                buf.writeBoolean(payload.isIrregular());
-                buf.writeUuid(payload.playerUuid());
-            },
-            buf -> new Payload(buf.readBoolean(), buf.readUuid())
-        );
+                (payload, buf) -> {
+                    buf.writeBoolean(payload.isIrregular());
+                    buf.writeUuid(payload.playerUuid());
+                },
+                buf -> new Payload(buf.readBoolean(), buf.readUuid()));
 
         @Override
         public Id<? extends CustomPayload> getId() {

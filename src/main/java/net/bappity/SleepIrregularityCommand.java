@@ -20,11 +20,10 @@ public class SleepIrregularityCommand {
                         ServerPlayerEntity player = net.minecraft.command.argument.EntityArgumentType.getPlayer(context, "target");
                         boolean irregular = BoolArgumentType.getBool(context, "irregular");
                         
-                        UUID uuid = player.getUuid();
                         if (irregular) {
-                            SleepManager.irregularPlayers.add(uuid);
+                            SleepManager.addIrregularPlayer(player);
                         } else {
-                            SleepManager.irregularPlayers.remove(uuid);
+                            SleepManager.removeIrregularPlayer(player);
                         }
                         
                         // Sync the change to the client

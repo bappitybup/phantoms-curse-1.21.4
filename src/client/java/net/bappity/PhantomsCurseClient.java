@@ -1,6 +1,6 @@
 package net.bappity;
 
-import net.bappity.network.client.SyncIrregularityClientHandler;
+import net.bappity.network.SyncIrregularityClientHandler;
 import net.fabricmc.api.ClientModInitializer;
 
 public class PhantomsCurseClient implements ClientModInitializer {

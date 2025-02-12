@@ -12,12 +12,5 @@ public class ModEvents {
             boolean isIrregular = SleepManager.isPlayerIrregular(player.getUuid());
             SyncIrregularityPacket.send(player, isIrregular);
         });
-
-        // When a player sleeps, record the bed position
-        EntitySleepEvents.START_SLEEPING.register((player, sleepingPos) -> {
-            if (player instanceof net.minecraft.server.network.ServerPlayerEntity serverPlayer) {
-                SleepManager.onPlayerSleep(serverPlayer, sleepingPos);
-            }
-        });
     }
 }

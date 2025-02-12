@@ -1,4 +1,4 @@
-package net.bappity.network.common;
+package net.bappity.network;
 
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;

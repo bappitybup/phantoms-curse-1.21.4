@@ -1,11 +1,12 @@
-package net.bappity.network.client;
+package net.bappity.network;
 
 import java.util.UUID;
 
-import net.bappity.SleepManager;
-import net.bappity.network.SyncIrregularityPacket;
+import net.bappity.ClientSleepManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public class SyncIrregularityClientHandler implements ClientPlayNetworking.PlayPayloadHandler<SyncIrregularityPacket.Payload> {
     
@@ -20,13 +21,12 @@ public class SyncIrregularityClientHandler implements ClientPlayNetworking.PlayP
         boolean isIrregular = payload.isIrregular();
         UUID playerUuid = payload.playerUuid();
         context.client().execute(() -> {
-            if (context.client().player != null && 
-                playerUuid.equals(context.client().player.getUuid())) {
-                if (isIrregular) {
-                    SleepManager.irregularPlayers.add(playerUuid);
-                } else {
-                    SleepManager.irregularPlayers.remove(playerUuid);
-                }
+            if (isIrregular) {
+                context.player().sendMessage(Text.translatable("message.phantoms-curse.irregular_added").formatted(Formatting.RED), true);
+                ClientSleepManager.addIrregularPlayer(playerUuid);
+            } else {
+                context.player().sendMessage(Text.translatable("message.phantoms-curse.irregular_removed").formatted(Formatting.RED), true);
+                ClientSleepManager.removeIrregularPlayer(playerUuid);
             }
         });
     }

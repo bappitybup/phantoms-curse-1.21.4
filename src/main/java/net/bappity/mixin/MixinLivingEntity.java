@@ -35,7 +35,14 @@ public abstract class MixinLivingEntity {
                 
                 // Apply Insomnia for 60 seconds (1200 ticks)
                 if (!player.hasStatusEffect(insomniaEffect)) {
-                    player.addStatusEffect(new StatusEffectInstance(insomniaEffect, 1200, 0, false, true, true));
+                    player.addStatusEffect(new StatusEffectInstance(
+                        insomniaEffect, 
+                        1200, 
+                        0, 
+                        false, 
+                        true, 
+                        true
+                    ));
                 }                
             }
         }

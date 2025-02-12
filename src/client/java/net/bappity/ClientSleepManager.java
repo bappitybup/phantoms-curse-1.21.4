@@ -1,17 +1,25 @@
 package net.bappity;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.HashSet;
 
 public class ClientSleepManager {
-    private static Set<UUID> irregularPlayers = new HashSet<>();
+    private static final Set<UUID> irregularPlayers = new HashSet<>();
 
-    public static Set<UUID> getIrregularPlayers() {
-        return irregularPlayers;
+    public static void addIrregularPlayer(UUID playerUuid) {
+        irregularPlayers.add(playerUuid);
     }
 
-    public static void setIrregularPlayers(Set<UUID> newSet) {
-        irregularPlayers = newSet;
+    public static void removeIrregularPlayer(UUID playerUuid) {
+        irregularPlayers.remove(playerUuid);
+    }
+
+    public static boolean isPlayerIrregular(UUID playerUuid) {
+        return irregularPlayers.contains(playerUuid);
+    }
+
+    public static void clear() {
+        irregularPlayers.clear();
     }
 }
