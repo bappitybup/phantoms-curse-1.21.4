@@ -3,18 +3,23 @@ package net.bappity.network;
 import java.util.UUID;
 
 import net.bappity.BappityPlayerDataAccessor;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class SyncIrregularityClientHandler implements ClientPlayNetworking.PlayPayloadHandler<SyncIrregularityPacket.Payload> {
     
     public static void register() {
-        // Register only on client side
-        PayloadTypeRegistry.playS2C().register(SyncIrregularityPacket.ID, SyncIrregularityPacket.Payload.CODEC);
-        ClientPlayNetworking.registerGlobalReceiver(SyncIrregularityPacket.ID, new SyncIrregularityClientHandler());
+        // Ensure this only runs on the client
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            // Register only on client side
+            PayloadTypeRegistry.playS2C().register(SyncIrregularityPacket.ID, SyncIrregularityPacket.Payload.CODEC);
+            ClientPlayNetworking.registerGlobalReceiver(SyncIrregularityPacket.ID, new SyncIrregularityClientHandler());
+        }
     }
 
     @Override

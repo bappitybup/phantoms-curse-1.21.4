@@ -32,24 +32,24 @@ public abstract class ServerMixinServerPlayerEntity implements BappityPlayerData
     private void onTrySleep(BlockPos pos, CallbackInfoReturnable<Either<PlayerEntity.SleepFailureReason, Unit>> cir) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
-        // Check for insomnia status effect
-        if (player.hasStatusEffect(ModStatusEffects.INSOMNIA_ENTRY)) {
-            // Allow entering bed but prevent sleep completion
-            player.setSpawnPoint(player.getWorld().getRegistryKey(), pos, player.getYaw(), false, true);
+        // // Check for insomnia status effect
+        // if (player.hasStatusEffect(ModStatusEffects.INSOMNIA_ENTRY)) {
+        //     // Allow entering bed but prevent sleep completion
+        //     player.setSpawnPoint(player.getWorld().getRegistryKey(), pos, player.getYaw(), false, true);
 
-            // Reapply insomnia effect
-            player.addStatusEffect(new StatusEffectInstance(
-                ModStatusEffects.INSOMNIA_ENTRY, // Use RegistryEntry<StatusEffect>
-                1200, // Duration in ticks (60 seconds)
-                0, // Amplifier
-                false, // No particles
-                true, // Show icon
-                true // Show ambient effect
-            ));
+        //     // Reapply insomnia effect
+        //     player.addStatusEffect(new StatusEffectInstance(
+        //         ModStatusEffects.INSOMNIA_ENTRY, // Use RegistryEntry<StatusEffect>
+        //         1200, // Duration in ticks (60 seconds)
+        //         0, // Amplifier
+        //         false, // No particles
+        //         true, // Show icon
+        //         true // Show ambient effect
+        //     ));
 
-            // Prevent sleep completion
-            cir.setReturnValue(Either.left(PlayerEntity.SleepFailureReason.OTHER_PROBLEM));
-        }
+        //     // Prevent sleep completion
+        //     cir.setReturnValue(Either.left(PlayerEntity.SleepFailureReason.OTHER_PROBLEM));
+        // }
     }
 
     @Inject(

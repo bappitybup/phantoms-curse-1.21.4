@@ -1,6 +1,9 @@
 package net.bappity.network;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
@@ -24,6 +27,14 @@ public class SyncIrregularityPacket {
         @Override
         public Id<? extends CustomPayload> getId() {
             return ID;
+        }
+    }
+
+    
+    public static void register() {
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+            // Register the payload codec on the server for S2C packets
+            PayloadTypeRegistry.playS2C().register(ID, Payload.CODEC);
         }
     }
 

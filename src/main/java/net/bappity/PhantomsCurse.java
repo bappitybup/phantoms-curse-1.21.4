@@ -16,9 +16,6 @@ public class PhantomsCurse implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Hello Fabric world!");
 
-        // Register custom status effects.
-        ModStatusEffects.registerStatusEffects();
-
         // Register commands
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             SleepIrregularityCommand.register(dispatcher);
@@ -29,5 +26,8 @@ public class PhantomsCurse implements ModInitializer {
 
         // Register the world tick event listener
         ServerTickEvents.END_WORLD_TICK.register(WorldTickHandler::onWorldTick);
+
+        // Register the payload codec
+        SyncIrregularityPacket.register();
     }
 }
