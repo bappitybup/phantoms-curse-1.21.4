@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
-public class MixinPlayerJoin {
+public class ServerMixinPlayerJoin {
 
     @Inject(method = "onSpawn", at = @At("HEAD"))
     private void onPlayerJoin(CallbackInfo ci) {

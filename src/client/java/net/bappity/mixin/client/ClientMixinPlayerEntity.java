@@ -5,7 +5,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ClientPlayerEntity.class)
-public abstract class ClientPlayerEntityMixin implements BappityPlayerDataAccessor {
+public abstract class ClientMixinPlayerEntity implements BappityPlayerDataAccessor {
     private boolean bappityIrregular;
 
     @Override

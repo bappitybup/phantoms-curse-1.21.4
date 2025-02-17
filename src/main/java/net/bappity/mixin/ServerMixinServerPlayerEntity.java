@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.mojang.datafixers.util.Either;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class MixinServerPlayerEntity implements BappityPlayerDataAccessor {
+public abstract class ServerMixinServerPlayerEntity implements BappityPlayerDataAccessor {
     private boolean bappityIrregular;
 
     @Inject(

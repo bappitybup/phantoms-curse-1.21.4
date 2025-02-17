@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 @Mixin(PlayerEntity.class)
-public abstract class MixinPlayerEntity {
+public abstract class ServerMixinPlayerEntity {
     @Inject(
         method = "wakeUp",
         at = @At("HEAD")

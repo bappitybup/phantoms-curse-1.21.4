@@ -3,11 +3,11 @@
     "package": "net.bappity.mixin",
     "compatibilityLevel": "JAVA_21",
 	"mixins": [
-        "MixinLivingEntity",
+        "ServerMixinLivingEntity",
         "ServerMixinPhantomEntity",
-        "MixinPlayerJoin",
-        "MixinPlayerEntity",
-        "MixinServerPlayerEntity"
+        "ServerMixinPlayerJoin",
+        "ServerMixinPlayerEntity",
+        "ServerMixinServerPlayerEntity"
 	],
 	"injectors": {
 		"defaultRequire": 1

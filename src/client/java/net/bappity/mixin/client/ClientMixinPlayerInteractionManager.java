@@ -15,7 +15,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
 @Mixin(ClientPlayerInteractionManager.class)
-public abstract class MixinClientPlayerInteractionManager {
+public abstract class ClientMixinPlayerInteractionManager {
     @Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
     private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
         if (target instanceof PhantomEntity && !SleepManager.isPlayerIrregular(player)) {

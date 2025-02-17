@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityRenderer.class)
-public abstract class MixinEntityRenderer<T extends Entity> {
+public abstract class ClientMixinEntityRenderer<T extends Entity> {
     @Inject(
             method = "shouldRender",
             at = @At("HEAD"),

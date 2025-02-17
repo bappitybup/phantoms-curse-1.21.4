@@ -3,12 +3,12 @@
 	"package": "net.bappity.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"MixinEntityRenderer",
+		"ClientMixinEntityRenderer",
 		"ClientMixinPhantomEntity",
 		"ClientMixinLivingEntity",
-		"MixinEntity",
-		"MixinClientPlayerInteractionManager",
-		"ClientPlayerEntityMixin"
+		"ClientMixinEntity",
+		"ClientMixinPlayerInteractionManager",
+		"ClientMixinPlayerEntity"
 	],
 	"injectors": {
 		"defaultRequire": 1

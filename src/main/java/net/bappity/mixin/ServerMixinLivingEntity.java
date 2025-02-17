@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class MixinLivingEntity {
+public abstract class ServerMixinLivingEntity {
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     private void damage(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
