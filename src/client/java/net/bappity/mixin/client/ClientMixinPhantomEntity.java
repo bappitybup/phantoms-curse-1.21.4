@@ -3,10 +3,13 @@ package net.bappity.mixin.client;
 import net.bappity.SleepManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.particle.DustColorTransitionParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -140,6 +143,38 @@ public abstract class ClientMixinPhantomEntity {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (!SleepManager.isPlayerIrregular(player)) {
             ci.cancel();
+        }
+    }
+
+    @Redirect(
+        method = "tick",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/World;playSound(DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FFZ)V"
+        )
+    )
+    private void redirectPlaySound(World world, double x, double y, double z, 
+                                  SoundEvent sound, SoundCategory category, 
+                                  float volume, float pitch, boolean useDistance) {
+        
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        // Only handle phantom flap sounds
+        if (sound == SoundEvents.ENTITY_PHANTOM_FLAP || 
+            sound == SoundEvents.ENTITY_PHANTOM_AMBIENT ||
+            sound == SoundEvents.ENTITY_PHANTOM_BITE ||
+            sound == SoundEvents.ENTITY_PHANTOM_DEATH ||
+            sound == SoundEvents.ENTITY_PHANTOM_HURT ||
+            sound == SoundEvents.ENTITY_PHANTOM_SWOOP) {
+            if (player != null && SleepManager.isPlayerIrregular(player)) {
+                // Play the sound only if the player has sleep irregularity
+                MinecraftClient.getInstance().getSoundManager().play(
+                    new PositionedSoundInstance(sound, category, volume, pitch, player.getRandom(), x, y, z)
+                );
+            }
+            // If the player doesn't have sleep irregularity, the sound is effectively canceled
+        } else {
+            // Pass through all other sounds
+            //world.playSound(x, y, z, sound, category, volume, pitch, useDistance);
         }
     }
 

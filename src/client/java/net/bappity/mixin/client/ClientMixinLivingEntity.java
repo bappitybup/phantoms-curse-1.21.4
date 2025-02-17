@@ -3,10 +3,14 @@ package net.bappity.mixin.client;
 import net.bappity.SleepManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PhantomEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.text.Text;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,9 +28,28 @@ public abstract class ClientMixinLivingEntity {
         LivingEntity entity = (LivingEntity) (Object) this;
         
         if (entity instanceof PhantomEntity) {
-            ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            if (player != null && !SleepManager.isPlayerIrregular(player)) {
-                ci.cancel(); // Cancel sound if player isn't irregular
+            World world = entity.getWorld();
+            if (world.isClient) {
+                // Client-side logic
+                ClientPlayerEntity player = MinecraftClient.getInstance().player;
+                if (player != null && !SleepManager.isPlayerIrregular(player)) {
+                    ci.cancel(); // Cancel sound if player isn't irregular
+                } else {
+                    MinecraftClient.getInstance().getSoundManager().play(
+                        new PositionedSoundInstance(
+                            sound, // Sound Event
+                            SoundCategory.HOSTILE,
+                            1.0F, // Volume
+                            1.0F, // Pitch
+                            entity.getRandom(), // Random (idk) 
+                            entity.getX(), // X position
+                            entity.getY(), // Y position
+                            entity.getZ()  // Z position
+                        )
+                    );
+                }
+            } else {
+                ci.cancel();
             }
         }
     }
