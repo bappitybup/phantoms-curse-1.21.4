@@ -146,38 +146,6 @@ public abstract class ClientMixinPhantomEntity {
         }
     }
 
-    @Redirect(
-        method = "tick",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/World;playSound(DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FFZ)V"
-        )
-    )
-    private void redirectPlaySound(World world, double x, double y, double z, 
-                                  SoundEvent sound, SoundCategory category, 
-                                  float volume, float pitch, boolean useDistance) {
-        
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        // Only handle phantom flap sounds
-        if (sound == SoundEvents.ENTITY_PHANTOM_FLAP || 
-            sound == SoundEvents.ENTITY_PHANTOM_AMBIENT ||
-            sound == SoundEvents.ENTITY_PHANTOM_BITE ||
-            sound == SoundEvents.ENTITY_PHANTOM_DEATH ||
-            sound == SoundEvents.ENTITY_PHANTOM_HURT ||
-            sound == SoundEvents.ENTITY_PHANTOM_SWOOP) {
-            if (player != null && SleepManager.isPlayerIrregular(player)) {
-                // Play the sound only if the player has sleep irregularity
-                MinecraftClient.getInstance().getSoundManager().play(
-                    new PositionedSoundInstance(sound, category, volume, pitch, player.getRandom(), x, y, z)
-                );
-            }
-            // If the player doesn't have sleep irregularity, the sound is effectively canceled
-        } else {
-            // Pass through all other sounds
-            //world.playSound(x, y, z, sound, category, volume, pitch, useDistance);
-        }
-    }
-
     private int packRgb(float r, float g, float b) {
         return ((int) (r * 255) << 16) | ((int) (g * 255) << 8) | (int) (b * 255);
     }
