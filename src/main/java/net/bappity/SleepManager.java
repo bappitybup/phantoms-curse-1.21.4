@@ -39,7 +39,6 @@ public class SleepManager {
         return ((BappityPlayerDataAccessor) player).isBappityIrregular();
     }
 
-
     public static void addIrregularPlayer(ServerPlayerEntity player) {
         BappityPlayerDataAccessor data = (BappityPlayerDataAccessor) player;
         if (!data.isBappityIrregular()) {

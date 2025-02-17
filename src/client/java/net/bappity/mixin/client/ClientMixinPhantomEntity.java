@@ -8,6 +8,7 @@ import net.minecraft.particle.DustColorTransitionParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -19,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PhantomEntity.class)
 public abstract class ClientMixinPhantomEntity {
+
     private int clientDisintegrationTimer = -1;
     private final int totalDisintegrationTime = 30;
     private Vec3d lastVelocity = Vec3d.ZERO;
@@ -46,19 +48,6 @@ public abstract class ClientMixinPhantomEntity {
             clientDisintegrationTimer--;
         } else {
             clientDisintegrationTimer = -1;
-        }
-    }
-
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FFZ)V"), cancellable = true)
-    private void onPlaySound(CallbackInfo ci) {
-        // Get the client player
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player != null) {
-            // Check if the player is NOT in the irregular list
-            if (!SleepManager.isPlayerIrregular(player)) {
-                // Cancel the ambient sound for phantoms
-                ci.cancel();
-            }
         }
     }
 
@@ -136,6 +125,22 @@ public abstract class ClientMixinPhantomEntity {
                 return;
         }
         world.addParticle(parameters, x, y, z, velocityX, velocityY, velocityZ);
+    }
+
+    @Inject(
+        method = "tick()V",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/World;playSound(DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FFZ)V",
+            ordinal = 0
+        ),
+        cancellable = true
+    )
+    private void cancelFlapSound(CallbackInfo ci) {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (!SleepManager.isPlayerIrregular(player)) {
+            ci.cancel();
+        }
     }
 
     private int packRgb(float r, float g, float b) {
