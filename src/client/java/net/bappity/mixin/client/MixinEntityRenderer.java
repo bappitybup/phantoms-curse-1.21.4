@@ -22,7 +22,7 @@ public abstract class MixinEntityRenderer<T extends Entity> {
     private void onRender(T entity, Frustum frustum, double x, double y, double z, CallbackInfoReturnable<Boolean> cir) {
         if (entity instanceof PhantomEntity && entity.getWorld().isClient) {
             PlayerEntity player = MinecraftClient.getInstance().player;
-            if (player != null && !SleepManager.isPlayerIrregular(player.getUuid())) {
+            if (player != null && !SleepManager.isPlayerIrregular(player)) {
                 cir.cancel();
             }
         }

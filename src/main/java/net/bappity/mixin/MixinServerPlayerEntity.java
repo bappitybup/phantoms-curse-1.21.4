@@ -1,21 +1,25 @@
 package net.bappity.mixin;
 
+import net.bappity.BappityPlayerDataAccessor;
 import net.bappity.ModStatusEffects;
 import net.bappity.SleepManager;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.mojang.datafixers.util.Either;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class MixinServerPlayerEntity {
+public abstract class MixinServerPlayerEntity implements BappityPlayerDataAccessor {
+    private boolean bappityIrregular;
 
     @Inject(
         method = "trySleep",
@@ -63,5 +67,27 @@ public abstract class MixinServerPlayerEntity {
         if (cir.getReturnValue() != null && cir.getReturnValue().right().isPresent()) {
             SleepManager.handleSuccessfulSleep(player, pos);
         }
+    }
+
+        @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
+    public void readCustomDataFromNbt(NbtCompound tag, CallbackInfo ci) {
+        if (tag.contains("BappityIrregular")) {
+            this.bappityIrregular = tag.getBoolean("BappityIrregular");
+        }
+    }
+
+    @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
+    public void writeCustomDataToNbt(NbtCompound tag, CallbackInfo ci) {
+        tag.putBoolean("BappityIrregular", this.bappityIrregular);
+    }
+
+    @Override
+    public boolean isBappityIrregular() {
+        return bappityIrregular;
+    }
+
+    @Override
+    public void setBappityIrregular(boolean irregular) {
+        bappityIrregular = irregular;
     }
 }

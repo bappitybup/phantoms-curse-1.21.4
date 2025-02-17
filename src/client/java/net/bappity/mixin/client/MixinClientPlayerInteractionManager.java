@@ -18,14 +18,14 @@ import net.minecraft.util.Hand;
 public abstract class MixinClientPlayerInteractionManager {
     @Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
     private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        if (target instanceof PhantomEntity && !SleepManager.isPlayerIrregular(player.getUuid())) {
+        if (target instanceof PhantomEntity && !SleepManager.isPlayerIrregular(player)) {
             ci.cancel(); // Cancel client-side attack
         }
     }
 
     @Inject(method = "interactEntity", at = @At("HEAD"), cancellable = true)
     private void onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (entity instanceof PhantomEntity && !SleepManager.isPlayerIrregular(player.getUuid())) {
+        if (entity instanceof PhantomEntity && !SleepManager.isPlayerIrregular(player)) {
             cir.setReturnValue(ActionResult.FAIL); // Prevent interaction
         }
     }

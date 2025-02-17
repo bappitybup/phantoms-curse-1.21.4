@@ -2,12 +2,9 @@ package net.bappity.network;
 
 import java.util.UUID;
 
-import net.bappity.ClientSleepManager;
+import net.bappity.BappityPlayerDataAccessor;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -26,15 +23,15 @@ public class SyncIrregularityClientHandler implements ClientPlayNetworking.PlayP
         UUID playerUuid = payload.playerUuid();
         context.client().execute(() -> {
             ClientPlayerEntity player = context.client().player;
-            if (player != null) {
+            if (player != null && player.getUuid().equals(playerUuid)) {
+                // Update the player's accessor directly
+                ((BappityPlayerDataAccessor) player).setBappityIrregular(isIrregular);
+                
                 if (isIrregular) {
                     player.playSound(SoundEvents.ENTITY_PHANTOM_FLAP, 0.5F, 0.1F);
-                    ClientSleepManager.addIrregularPlayer(playerUuid);
                 } else {
-                    // Dereference the SoundEvent from the Reference<SoundEvent>
                     SoundEvent basaltDeltasMood = SoundEvents.AMBIENT_BASALT_DELTAS_MOOD.value();
                     player.playSound(basaltDeltasMood, 0.1F, 1.0F);
-                    ClientSleepManager.removeIrregularPlayer(playerUuid);
                 }
             }
         });

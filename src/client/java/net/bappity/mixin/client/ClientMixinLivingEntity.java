@@ -22,7 +22,7 @@ public abstract class ClientMixinLivingEntity {
         // Check if the entity is a Phantom
         if ((Object) this instanceof PhantomEntity) {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            if (player != null && !SleepManager.isPlayerIrregular(player.getUuid())) {
+            if (player != null && !SleepManager.isPlayerIrregular(player)) {
                 ci.cancel(); // Cancel sound for irregular players
             }
         }

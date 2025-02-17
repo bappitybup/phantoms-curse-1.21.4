@@ -33,7 +33,7 @@ public abstract class ClientMixinPhantomEntity {
         BlockPos pos = phantom.getBlockPos();
         boolean shouldDisintegrate = phantom.getWorld().isDay() && 
                                      phantom.getWorld().isSkyVisible(pos) && 
-                                     SleepManager.isPlayerIrregular(player.getUuid());
+                                     SleepManager.isPlayerIrregular(player);
 
         if (shouldDisintegrate) {
             if (clientDisintegrationTimer < 0) {
@@ -55,7 +55,7 @@ public abstract class ClientMixinPhantomEntity {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null) {
             // Check if the player is NOT in the irregular list
-            if (!SleepManager.isPlayerIrregular(player.getUuid())) {
+            if (!SleepManager.isPlayerIrregular(player)) {
                 // Cancel the ambient sound for phantoms
                 ci.cancel();
             }
@@ -131,9 +131,8 @@ public abstract class ClientMixinPhantomEntity {
                                         double x, double y, double z,
                                         double velocityX, double velocityY, double velocityZ) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        PhantomEntity phantom = (PhantomEntity) (Object) this;
         if (parameters == ParticleTypes.MYCELIUM && player != null && 
-            !SleepManager.isPlayerIrregular(player.getUuid())) {
+            !SleepManager.isPlayerIrregular(player)) {
                 return;
         }
         world.addParticle(parameters, x, y, z, velocityX, velocityY, velocityZ);

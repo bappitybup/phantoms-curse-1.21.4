@@ -19,7 +19,7 @@ public abstract class MixinEntity {
         Entity self = (Entity) (Object) this;
         if (self instanceof PhantomEntity && self.getWorld().isClient()) {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            if (player != null && !SleepManager.isPlayerIrregular(player.getUuid())) {
+            if (player != null && !SleepManager.isPlayerIrregular(player)) {
                 cir.setReturnValue(new Box(0, 0, 0, 0, 0, 0)); // Empty bounding box
             }
         }
