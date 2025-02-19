@@ -1,9 +1,11 @@
 package net.bappity;
 
-import net.bappity.network.SyncIrregularityPacket;
+import net.bappity.network.ServerSyncIrregularityPacket;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.loader.api.FabricLoader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +29,9 @@ public class PhantomsCurse implements ModInitializer {
         // Register the world tick event listener
         ServerTickEvents.END_WORLD_TICK.register(WorldTickHandler::onWorldTick);
 
-        // Register the payload codec
-        SyncIrregularityPacket.register();
+        // Register server packets only if running on a server
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+            ServerSyncIrregularityPacket.register();
+        }
     }
 }

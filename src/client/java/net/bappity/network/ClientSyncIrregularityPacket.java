@@ -3,33 +3,26 @@ package net.bappity.network;
 import java.util.UUID;
 
 import net.bappity.BappityPlayerDataAccessor;
-import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.fabricmc.loader.api.FabricLoader;
 
-public class SyncIrregularityClientHandler implements ClientPlayNetworking.PlayPayloadHandler<SyncIrregularityPacket.Payload> {
+public class ClientSyncIrregularityPacket implements ClientPlayNetworking.PlayPayloadHandler<ServerSyncIrregularityPacket.Payload> {
     
     public static void register() {
-        // Ensure this only runs on the client
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            // Register only on client side
-            PayloadTypeRegistry.playS2C().register(SyncIrregularityPacket.ID, SyncIrregularityPacket.Payload.CODEC);
-            ClientPlayNetworking.registerGlobalReceiver(SyncIrregularityPacket.ID, new SyncIrregularityClientHandler());
-        }
+        PayloadTypeRegistry.playS2C().register(ServerSyncIrregularityPacket.ID, ServerSyncIrregularityPacket.Payload.CODEC);
+        ClientPlayNetworking.registerGlobalReceiver(ServerSyncIrregularityPacket.ID, new ClientSyncIrregularityPacket());
     }
 
     @Override
-    public void receive(SyncIrregularityPacket.Payload payload, ClientPlayNetworking.Context context) {
+    public void receive(ServerSyncIrregularityPacket.Payload payload, ClientPlayNetworking.Context context) {
         boolean isIrregular = payload.isIrregular();
         UUID playerUuid = payload.playerUuid();
         context.client().execute(() -> {
             ClientPlayerEntity player = context.client().player;
             if (player != null && player.getUuid().equals(playerUuid)) {
-                // Update the player's accessor directly
                 ((BappityPlayerDataAccessor) player).setBappityIrregular(isIrregular);
                 
                 if (isIrregular) {

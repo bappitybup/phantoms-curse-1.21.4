@@ -3,7 +3,7 @@ package net.bappity;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import net.bappity.network.SyncIrregularityPacket;
+import net.bappity.network.ServerSyncIrregularityPacket;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -27,7 +27,7 @@ public class SleepIrregularityCommand {
                         }
                         
                         // Sync the change to the client
-                        SyncIrregularityPacket.send(player, irregular);
+                        ServerSyncIrregularityPacket.send(player, irregular);
                         
                         // Optional feedback
                         context.getSource().sendFeedback(() -> 

@@ -27,23 +27,6 @@ public abstract class ServerMixinLivingEntity {
                 if (!SleepManager.isPlayerIrregular(player) || world.isDay()) {
                     cir.cancel();
                 }
-
-                // // Unwrap the Optional to get the RegistryEntry for the insomnia effect.
-                // RegistryEntry<StatusEffect> insomniaEffect = Registries.STATUS_EFFECT
-                //         .getEntry(Registries.STATUS_EFFECT.getRawId(ModStatusEffects.INSOMNIA))
-                //         .orElseThrow(() -> new IllegalStateException("Insomnia status effect not registered!"));
-                
-                // // Apply Insomnia for 60 seconds (1200 ticks)
-                // if (!player.hasStatusEffect(insomniaEffect)) {
-                //     player.addStatusEffect(new StatusEffectInstance(
-                //         insomniaEffect, 
-                //         1200, 
-                //         0, 
-                //         false, 
-                //         true, 
-                //         true
-                //     ));
-                // }
             }
         }
     }

@@ -1,6 +1,6 @@
 package net.bappity;
 
-import net.bappity.network.SyncIrregularityPacket;
+import net.bappity.network.ServerSyncIrregularityPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -24,12 +24,12 @@ public class SleepManager {
             if (!bedPos.equals(previousBed)) {
                 if (!data.isBappityIrregular()) {
                     data.setBappityIrregular(true);
-                    SyncIrregularityPacket.send(player, true);
+                    ServerSyncIrregularityPacket.send(player, true);
                 }
             } else {
                 if (data.isBappityIrregular()) {
                     data.setBappityIrregular(false);
-                    SyncIrregularityPacket.send(player, false);
+                    ServerSyncIrregularityPacket.send(player, false);
                 }
             }
         }
@@ -43,7 +43,7 @@ public class SleepManager {
         BappityPlayerDataAccessor data = (BappityPlayerDataAccessor) player;
         if (!data.isBappityIrregular()) {
             data.setBappityIrregular(true);
-            SyncIrregularityPacket.send(player, true);
+            ServerSyncIrregularityPacket.send(player, true);
         }
     }
 
@@ -51,7 +51,7 @@ public class SleepManager {
         BappityPlayerDataAccessor data = (BappityPlayerDataAccessor) player;
         if (data.isBappityIrregular()) {
             data.setBappityIrregular(false);
-            SyncIrregularityPacket.send(player, false);
+            ServerSyncIrregularityPacket.send(player, false);
         }
     }
 
@@ -60,7 +60,7 @@ public class SleepManager {
             BappityPlayerDataAccessor data = (BappityPlayerDataAccessor) player;
             if (data.isBappityIrregular()) {
                 data.setBappityIrregular(false);
-                SyncIrregularityPacket.send(player, false);
+                ServerSyncIrregularityPacket.send(player, false);
             }
         });
     }
